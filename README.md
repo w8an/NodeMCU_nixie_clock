@@ -1,37 +1,21 @@
-## Welcome to GitHub Pages
+# NodeMCU Nixie clock
 
-You can use the [editor on GitHub](https://github.com/w8an/NodeMCU_nixie_clock/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+This is a simple real time clock written in Lua that uses the NodeMCU timer object to keep time. The accuracy of such a clock would be very poor, so the clock is updated periodically from an NTP clock source.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+The clock uses six Nixie tubes to diplay the time. The Nixie tubes are multiplexed to keep component count small. A multiplexed display requires 3 output ports for the Nixie tube selector (6 tubes, 000-101 binary), and 4 output ports for the digit displayed on the current selected Nixie tube (0-9, 0000-1001 binary).
 
-### Markdown
+In this implementation, the multiplexer ports are on an MCU23017 port expander chip controlled via an I&#0178;C bus. This method was chosen as I have additional I&#0178;C devices to attach to this system.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+ - Port A, bits 0-3, output binary coded decimal to an SN74141 (or K155ID1), **BCD to Nixie decoder driver**.
+ -Port B, bits 0-5 each connect to a high voltage transistor switch network to provide the +170 Volt DC to each tube-- one tube at a time.
 
-```markdown
-Syntax highlighted code block
+### NodeMCU Modules
 
-# Header 1
-## Header 2
-### Header 3
+NodeMCU firmware was built using the tool at https://nodemcu-build.com/ and contains the default modules plus the following additional modules:
+  - i2c
+  - rtctime
 
-- Bulleted
-- List
+License
+----
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/w8an/NodeMCU_nixie_clock/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+MIT
